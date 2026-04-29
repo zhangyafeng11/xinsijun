@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新四军抗战文化导学 · 时间线地图</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 20px 30px;
+            background: linear-gradient(180deg, rgba(192, 36, 37, 0.3) 0%, transparent 100%);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #f5c518;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            font-size: 14px;
+            color: rgba(255,255,255,0.8);
+            font-style: italic;
+        }
+
+        .timeline-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, #c02425, #f5c518, #c02425);
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -33px;
+            top: 8px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #2a2a4a;
+            border: 3px solid #c02425;
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+
+        .timeline-item:hover::before,
+        .timeline-item.active::before {
+            background: #c02425;
+            box-shadow: 0 0 15px rgba(192, 36, 37, 0.8);
+            transform: scale(1.2);
+        }
+
+        .timeline-item.active .timeline-content {
+            background: rgba(192, 36, 37, 0.3);
+            border-color: #f5c518;
+        }
+
+        .timeline-content {
+            background: rgba(42, 42, 74, 0.6);
+            border-radius: 12px;
+            padding: 15px 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item:hover .timeline-content {
+            background: rgba(192, 36, 37, 0.2);
+            border-color: rgba(245, 197, 24, 0.5);
+            transform: translateX(5px);
+        }
+
+        .timeline-year {
+            font-size: 13px;
+            color: #f5c518;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .timeline-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .timeline-desc {
+            font-size: 14px;
+            color: rgba(255,255,255,0.75);
+            line-height: 1.5;
+        }
+
+        .bottom-card {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 0 20px 40px;
+        }
+
+        .content-card {
+            background: rgba(26, 26, 46, 0.95);
+            border-radius: 16px;
+            padding: 30px;
+            border: 2px solid rgba(192, 36, 37, 0.5);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .welcome-text {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .welcome-text h2 {
+            font-size: 24px;
+            color: #f5c518;
+            margin-bottom: 15px;
+        }
+
+        .welcome-text p {
+            font-size: 16px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .event-detail {
+            display: none;
+        }
+
+        .event-detail.active {
+            display: block;
+        }
+
+        .event-header {
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+
+        .event-header h2 {
+            font-size: 22px;
+            color: #f5c518;
+            margin-bottom: 5px;
+        }
+
+        .event-header .year-tag {
+            display: inline-block;
+            background: #c02425;
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+        }
+
+        .task-section {
+            background: rgba(245, 197, 24, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #f5c518;
+        }
+
+        .task-section h3 {
+            font-size: 16px;
+            color: #f5c518;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .task-section h3::before {
+            content: '📋';
+        }
+
+        .task-text {
+            font-size: 15px;
+            color: rgba(255,255,255,0.9);
+            line-height: 1.6;
+        }
+
+        .resource-section {
+            margin-bottom: 25px;
+        }
+
+        .resource-section h3 {
+            font-size: 16px;
+            color: #f5c518;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .resource-section h3::before {
+            content: '📚';
+        }
+
+        .resource-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(192, 36, 37, 0.3);
+            color: #fff;
+            padding: 10px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(192, 36, 37, 0.5);
+        }
+
+        .resource-link:hover {
+            background: rgba(192, 36, 37, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .ai-section {
+            background: rgba(16, 185, 129, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            border-left: 4px solid #10b981;
+        }
+
+        .ai-section h3 {
+            font-size: 16px;
+            color: #10b981;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ai-section h3::before {
+            content: '🤖';
+        }
+
+        .preset-questions {
+            margin-bottom: 15px;
+        }
+
+        .preset-btn {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: #fff;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 10px;
+            width: 100%;
+            text-align: left;
+        }
+
+        .preset-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        .preset-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .ai-response {
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            max-height: 250px;
+            overflow-y: auto;
+            font-size: 14px;
+            line-height: 1.7;
+            color: rgba(255,255,255,0.9);
+            display: none;
+        }
+
+        .ai-response.show {
+            display: block;
+        }
+
+        .custom-question {
+            margin-top: 20px;
+        }
+
+        .custom-question h4 {
+            font-size: 14px;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 10px;
+        }
+
+        .question-input-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .question-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .question-input::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+
+        .question-input:focus {
+            border-color: #10b981;
+        }
+
+        .ask-btn {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .ask-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .ask-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .error-msg {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.5);
+            color: #fca5a5;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 22px;
+            }
+
+            .timeline-content {
+                padding: 12px 15px;
+            }
+
+            .content-card {
+                padding: 20px;
+            }
+
+            .question-input-group {
+                flex-direction: column;
+            }
+
+            .question-input {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>新四军抗战文化导学 · 时间线地图</h1>
+        <p class="subtitle">铭记历史 · 珍爱和平 · 吾辈自强</p>
+    </header>
+
+    <div class="timeline-container">
+        <div class="timeline" id="timeline"></div>
+    </div>
+
+    <div class="bottom-card">
+        <div class="content-card">
+            <div class="welcome-text" id="welcomeText">
+                <h2>📖 点击上方任意事件，开始学习</h2>
+                <p>每个时间节点都承载着新四军的抗战记忆，点击即可探索历史</p>
+            </div>
+            <div class="event-detail" id="eventDetail"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_KEY = 'YOUR_DEEPSEEK_API_KEY';
+        const API_URL = 'https://ark.cn-beijing.volces.com/api/v3/chat/completions';
+        const MODEL = 'deepseek-v3-2-251201';
+
+        const timelineData = [
+            {
+                year: '1937-1938',
+                title: '军部组建',
+                desc: '南方红军游击队改编为新四军',
+                task: '了解国共合作背景和新四军组建过程',
+                resourceUrl: 'https://example.com/junbu',
+                presetQuestion: '为什么南方红军游击队要改编为新四军？这对抗战有什么意义？'
+            },
+            {
+                year: '1938-1940',
+                title: '东进抗日',
+                desc: '挺进华中敌后，建立根据地',
+                task: '分析东进战略的意义',
+                resourceUrl: 'https://example.com/dongjin',
+                presetQuestion: '新四军东进抗日采取了什么战略？为什么选择向华中敌后发展？'
+            },
+            {
+                year: '1940',
+                title: '黄桥战役',
+                desc: '以少胜多的经典战役',
+                task: '总结黄桥战役胜利的原因',
+                resourceUrl: 'https://example.com/huangqiao',
+                presetQuestion: '黄桥战役为什么能以少胜多？有哪些关键因素？'
+            },
+            {
+                year: '1941',
+                title: '军部重建',
+                desc: '皖南事变后在盐城重建军部',
+                task: '学习皖南事变经过及重建影响',
+                resourceUrl: 'https://example.com/chongjian',
+                presetQuestion: '皖南事变是怎么回事？新四军如何在逆境中重建军部？'
+            },
+            {
+                year: '1941-1943',
+                title: '反扫荡斗争',
+                desc: '粉碎日伪军多次"扫荡"',
+                task: '模拟设计一次反扫荡战术',
+                resourceUrl: 'https://example.com/fansao',
+                presetQuestion: '新四军反扫荡斗争有哪些特点和成功经验？'
+            },
+            {
+                year: '1945',
+                title: '抗战胜利',
+                desc: '战略反攻，迎来胜利',
+                task: '总结新四军抗战贡献',
+                resourceUrl: 'https://example.com/shengli',
+                presetQuestion: '新四军在抗日战争中做出了哪些重要贡献？'
+            }
+        ];
+
+        let currentEvent = null;
+
+        function renderTimeline() {
+            const timeline = document.getElementById('timeline');
+            timeline.innerHTML = timelineData.map((item, index) => `
+                <div class="timeline-item" data-index="${index}">
+                    <div class="timeline-content">
+                        <div class="timeline-year">${item.year}</div>
+                        <div class="timeline-title">${item.title}</div>
+                        <div class="timeline-desc">${item.desc}</div>
+                    </div>
+                </div>
+            `).join('');
+
+            document.querySelectorAll('.timeline-item').forEach(item => {
+                item.addEventListener('click', () => selectEvent(parseInt(item.dataset.index)));
+            });
+        }
+
+        function selectEvent(index) {
+            currentEvent = timelineData[index];
+
+            document.querySelectorAll('.timeline-item').forEach((item, i) => {
+                item.classList.toggle('active', i === index);
+            });
+
+            document.getElementById('welcomeText').style.display = 'none';
+
+            const detail = document.getElementById('eventDetail');
+            detail.classList.add('active');
+            detail.innerHTML = `
+                <div class="event-header">
+                    <h2>${currentEvent.title}</h2>
+                    <span class="year-tag">${currentEvent.year}年</span>
+                </div>
+
+                <div class="task-section">
+                    <h3>学习任务</h3>
+                    <p class="task-text">${currentEvent.task}</p>
+                </div>
+
+                <div class="resource-section">
+                    <h3>学习资源</h3>
+                    <a href="${currentEvent.resourceUrl}" target="_blank" class="resource-link">
+                        🔗 点击访问：${currentEvent.title}相关资料
+                    </a>
+                </div>
+
+                <div class="ai-section">
+                    <h3>AI 智能讲解</h3>
+                    <div class="preset-questions">
+                        <button class="preset-btn" onclick="askPresetQuestion('${currentEvent.presetQuestion.replace(/'/g, "\\'")}')">
+                            💬 ${currentEvent.presetQuestion}
+                        </button>
+                    </div>
+                    <div class="ai-response" id="aiResponse"></div>
+
+                    <div class="custom-question">
+                        <h4>或输入您的问题：</h4>
+                        <div class="question-input-group">
+                            <input type="text" class="question-input" id="customQuestion" placeholder="请输入您想了解的问题...">
+                            <button class="ask-btn" onclick="askCustomQuestion()">提问</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function askPresetQuestion(question) {
+            await callDeepSeekAPI(question);
+        }
+
+        async function askCustomQuestion() {
+            const input = document.getElementById('customQuestion');
+            const question = input.value.trim();
+            if (!question) {
+                alert('请输入问题');
+                return;
+            }
+            await callDeepSeekAPI(question);
+            input.value = '';
+        }
+
+        async function callDeepSeekAPI(question) {
+            const responseEl = document.getElementById('aiResponse');
+            const presetBtns = document.querySelectorAll('.preset-btn');
+            const askBtn = document.querySelector('.ask-btn');
+
+            responseEl.classList.remove('show');
+            responseEl.innerHTML = '<span class="loading"></span>正在思考中...';
+            responseEl.classList.add('show');
+
+            presetBtns.forEach(btn => btn.disabled = true);
+            askBtn.disabled = true;
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${API_KEY}`
+                    },
+                    body: JSON.stringify({
+                        model: MODEL,
+                        messages: [
+                            {
+                                role: 'system',
+                                content: '你是一位新四军历史教育专家，擅长用生动、准确的语言讲解抗战历史。'
+                            },
+                            {
+                                role: 'user',
+                                content: question
+                            }
+                        ],
+                        stream: false
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API请求失败: ${response.status}`);
+                }
+
+                const data = await response.json();
+                const answer = data.choices[0].message.content;
+
+                responseEl.innerHTML = answer.replace(/\n/g, '<br>');
+
+            } catch (error) {
+                console.error('API Error:', error);
+                responseEl.innerHTML = `
+                    <div class="error-msg">
+                        ⚠️ 获取回答失败：${error.message}<br>
+                        请检查 API Key 是否正确配置，或确认网络连接正常。
+                    </div>
+                `;
+            } finally {
+                presetBtns.forEach(btn => btn.disabled = false);
+                askBtn.disabled = false;
+            }
+        }
+
+        renderTimeline();
+    </script>
+</body>
+</html>
