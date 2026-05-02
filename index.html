@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新四军抗战文化导学 · 时间线地图</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            text-align: center;
+            padding: 30px 20px;
+            background: linear-gradient(180deg, rgba(192, 36, 37, 0.3) 0%, transparent 100%);
+        }
+
+        .header h1 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #f5c518;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 8px;
+        }
+
+        .header .subtitle {
+            font-size: 13px;
+            color: rgba(255,255,255,0.7);
+            font-style: italic;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .timeline-container {
+            width: 33.33%;
+            max-width: 380px;
+            background: rgba(26, 26, 46, 0.9);
+            border-radius: 16px;
+            padding: 16px;
+            border: 1px solid rgba(192, 36, 37, 0.3);
+            max-height: calc(100vh - 180px);
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        .timeline-container h2 {
+            font-size: 16px;
+            color: #f5c518;
+            margin-bottom: 20px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .timeline-container h2::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 3px;
+            background: #f5c518;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 28px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, #c02425, #f5c518, #c02425);
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 22px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 18px 20px;
+            border-radius: 12px;
+            background: rgba(42, 42, 74, 0.6);
+            border: 1px solid rgba(192, 36, 37, 0.2);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -24px;
+            top: 20px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #2a2a4a;
+            border: 3px solid #c02425;
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+
+        .timeline-item:hover::before,
+        .timeline-item.active::before {
+            background: #c02425;
+            box-shadow: 0 0 12px rgba(192, 36, 37, 0.8);
+            transform: scale(1.3);
+        }
+
+        .timeline-item.active {
+            background: rgba(192, 36, 37, 0.3);
+            border: 1px solid rgba(245, 197, 24, 0.5);
+        }
+
+        .timeline-year {
+            font-size: 14px;
+            color: #10b981;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .timeline-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #f5c518;
+            margin-bottom: 0;
+            line-height: 1.3;
+        }
+
+        .timeline-desc {
+            font-size: 12px;
+            color: rgba(255,255,255,0.65);
+            line-height: 1.4;
+        }
+
+        .detail-panel {
+            flex: 1;
+            background: rgba(26, 26, 46, 0.95);
+            border-radius: 16px;
+            padding: 30px;
+            border: 1px solid rgba(192, 36, 37, 0.3);
+            overflow-y: auto;
+            max-height: calc(100vh - 180px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .welcome-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 400px;
+        }
+
+        .welcome-panel h2 {
+            font-size: 22px;
+            color: #f5c518;
+            margin-bottom: 15px;
+        }
+
+        .welcome-panel p {
+            font-size: 15px;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.6;
+        }
+
+        .welcome-panel .icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .event-detail {
+            display: none;
+            flex: 1;
+        }
+
+        .event-detail.active {
+            display: block;
+        }
+
+        .event-header {
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .event-header h2 {
+            font-size: 26px;
+            color: #f5c518;
+            margin-bottom: 10px;
+        }
+
+        .event-header .year-tag {
+            display: inline-block;
+            background: #c02425;
+            color: #fff;
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-right: 12px;
+        }
+
+        .event-header .desc {
+            font-size: 15px;
+            color: rgba(255,255,255,0.7);
+            margin-top: 12px;
+            line-height: 1.6;
+        }
+
+        .carousel-wrapper {
+            position: relative;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: rgba(0,0,0,0.3);
+        }
+
+        .carousel-container {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .carousel-item {
+            flex: 0 0 100%;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+        }
+
+        .carousel-prev,
+        .carousel-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.7);
+            border: none;
+            color: #fff;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            font-size: 26px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .carousel-prev:hover,
+        .carousel-next:hover {
+            background: rgba(192, 36, 37, 0.9);
+        }
+
+        .carousel-prev {
+            left: 12px;
+        }
+
+        .carousel-next {
+            right: 12px;
+        }
+
+        .carousel-counter {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(0,0,0,0.7);
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #fff;
+        }
+
+        .carousel-indicators {
+            position: absolute;
+            bottom: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+
+        .carousel-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-indicator.active {
+            background: #f5c518;
+            transform: scale(1.2);
+        }
+
+        .carousel-hint {
+            position: absolute;
+            bottom: 45px;
+            right: 15px;
+            font-size: 11px;
+            color: rgba(255,255,255,0.6);
+            background: rgba(0,0,0,0.5);
+            padding: 4px 10px;
+            border-radius: 10px;
+        }
+
+        .image-viewer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-viewer-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.9);
+        }
+
+        .image-viewer-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            z-index: 1001;
+        }
+
+        .image-viewer-content img {
+            max-width: 100%;
+            max-height: 85vh;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        .image-viewer-close {
+            position: absolute;
+            top: -45px;
+            right: 0;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: #fff;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-viewer-close:hover {
+            background: rgba(192, 36, 37, 0.8);
+        }
+
+        .task-section {
+            background: rgba(245, 197, 24, 0.1);
+            border-radius: 12px;
+            padding: 22px;
+            margin-bottom: 25px;
+            border-left: 4px solid #f5c518;
+        }
+
+        .task-section h3 {
+            font-size: 16px;
+            color: #f5c518;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .task-section h3::before {
+            content: '📋';
+        }
+
+        .task-text {
+            font-size: 15px;
+            color: rgba(255,255,255,0.9);
+            line-height: 1.7;
+        }
+
+        .resource-section {
+            margin-bottom: 28px;
+        }
+
+        .resource-section h3 {
+            font-size: 16px;
+            color: #f5c518;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .resource-section h3::before {
+            content: '📚';
+        }
+
+        .resource-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(192, 36, 37, 0.3);
+            color: #fff;
+            padding: 12px 22px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(192, 36, 37, 0.5);
+            margin-right: 14px;
+            margin-bottom: 14px;
+        }
+
+        .resource-link:hover {
+            background: rgba(192, 36, 37, 0.5);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(192, 36, 37, 0.3);
+        }
+
+        .ai-section {
+            background: rgba(16, 185, 129, 0.1);
+            border-radius: 12px;
+            padding: 25px;
+            border-left: 4px solid #10b981;
+        }
+
+        .ai-section h3 {
+            font-size: 20px;
+            color: #10b981;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            line-height: 1.6;
+        }
+
+        .preset-questions {
+            margin-bottom: 20px;
+        }
+
+        .preset-btn {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: #fff;
+            border: none;
+            padding: 15px 22px;
+            border-radius: 10px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 12px;
+            width: 100%;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .preset-btn::before {
+            content: '💬';
+        }
+
+        .preset-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+        }
+
+        .preset-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .ai-response {
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-size: 15px;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.9);
+            display: none;
+        }
+
+        .ai-response.show {
+            display: block;
+        }
+
+        .custom-question {
+            margin-top: 25px;
+        }
+
+        .custom-question h4 {
+            font-size: 15px;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 14px;
+        }
+
+        .question-input-group {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .question-input {
+            flex: 1;
+            min-width: 280px;
+            padding: 15px 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .question-input::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+
+        .question-input:focus {
+            border-color: #10b981;
+        }
+
+        .ask-btn {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: #fff;
+            border: none;
+            padding: 15px 32px;
+            border-radius: 10px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ask-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        .ask-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .preset-label {
+            font-size: 13px;
+            color: rgba(255,255,255,0.6);
+            margin-right: 10px;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .error-msg {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.5);
+            color: #fca5a5;
+            padding: 16px;
+            border-radius: 10px;
+            margin-top: 14px;
+            font-size: 14px;
+        }
+
+        .video-section {
+            margin-bottom: 25px;
+        }
+
+        .video-section h3 {
+            font-size: 16px;
+            color: #f5c518;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .video-section h3::before {
+            content: '🎬';
+        }
+
+        .video-large {
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #000;
+            margin-bottom: 15px;
+        }
+
+        .video-large iframe {
+            width: 100%;
+            height: 350px;
+        }
+
+        .video-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .video-card {
+            background: rgba(42, 42, 74, 0.8);
+            border-radius: 12px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(192, 36, 37, 0.3);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .video-card:hover {
+            background: rgba(192, 36, 37, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(192, 36, 37, 0.3);
+            border-color: rgba(245, 197, 24, 0.5);
+        }
+
+        .video-card .video-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .video-card .video-title {
+            font-size: 13px;
+            color: #f5c518;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .video-card .video-source {
+            font-size: 11px;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .video-large-card {
+            width: 100%;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+            aspect-ratio: 16/9;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(192, 36, 37, 0.3);
+        }
+
+        .video-large-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border-color: rgba(245, 197, 24, 0.5);
+        }
+
+        .video-large-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(192, 36, 37, 0.4), rgba(42, 42, 74, 0.6));
+        }
+
+        .video-large-icon {
+            font-size: 70px;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s ease;
+        }
+
+        .video-large-card:hover .video-large-icon {
+            transform: scale(1.2);
+        }
+
+        .video-large-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px 20px;
+            background: linear-gradient(0deg, rgba(0,0,0,0.9), transparent);
+            z-index: 1;
+        }
+
+        .video-large-title {
+            font-size: 15px;
+            color: #f5c518;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .video-large-source {
+            font-size: 12px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 25px 20px;
+            color: rgba(255,255,255,0.4);
+            font-size: 13px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .timeline-container {
+                width: 100%;
+                max-width: none;
+                max-height: 400px;
+            }
+            
+            .detail-panel {
+                max-height: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .main-content {
+                padding: 12px;
+                gap: 15px;
+            }
+
+            .timeline-container,
+            .detail-panel {
+                padding: 15px;
+            }
+
+            .timeline-title {
+                font-size: 15px;
+            }
+
+            .carousel-item img {
+                height: 200px;
+            }
+
+            .carousel-prev,
+            .carousel-next {
+                width: 35px;
+                height: 35px;
+                font-size: 20px;
+            }
+
+            .event-header h2 {
+                font-size: 22px;
+            }
+
+            .question-input-group {
+                flex-direction: column;
+            }
+
+            .question-input {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>新四军抗战文化导学 · 时间线地图</h1>
+        <p class="subtitle">铭记历史 · 珍爱和平 · 吾辈自强</p>
+    </header>
+
+    <div class="main-content">
+        <div class="timeline-container">
+            <h2>📅 历史时间线</h2>
+            <div class="timeline" id="timeline"></div>
+        </div>
+
+        <div class="detail-panel">
+            <div class="welcome-panel" id="welcomePanel">
+                <div class="icon">📖</div>
+                <h2>点击左侧事件，探索历史</h2>
+                <p>每个时间节点都承载着新四军的抗战记忆</p>
+            </div>
+            <div class="event-detail" id="eventDetail"></div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        图片来源：抗日战争纪念网等公开历史资料 | 视频来源：央视纪录片及网络公开资源，仅用于教学展示
+    </footer>
+
+    <script>
+        const API_KEY = 'ark-f959201a-2f48-40c9-9fd4-3686f6842e18-a926b';
+        const API_URL = 'https://ark.cn-beijing.volces.com/api/v3/chat/completions';
+        const MODEL = 'deepseek-v3-2-251201';
+
+        const junbuImages = [
+            'image/junbu_1.png',
+            'image/junbu_2.png', 
+            'image/junbu_3.png',
+            'image/junbu_4.jpg'
+        ];
+
+        const dongjinImages = [
+            'image/dongjin_1.jpg',
+            'image/dongjin_2.jpg',
+            'image/dongjin_3.jpg'
+        ];
+
+        const huangqiaoImages = [
+            'image/huangqiao_1.webp',
+            'image/huangqiao_2.webp',
+            'image/huangqiao_3.jpg',
+            'image/huangqiao_4.webp'
+        ];
+
+        const timelineData = [
+            {
+                year: '1937-1938',
+                title: '军部组建',
+                desc: '南方红军游击队改编为新四军，开启华中抗战新篇章。1937年抗日战争全面爆发后，根据国共两党协议，南方八省的红军和游击队改编为国民革命军陆军新编第四军，叶挺任军长，项英任副军长。新四军的组建标志着南方游击战争进入新阶段。',
+                task: '了解国共合作背景和新四军组建过程的历史意义，分析改编对南方游击战争的影响，认识新四军在华中抗战中的战略地位',
+                images: junbuImages,
+                resources: [
+                    { name: '新四军军部旧址', url: 'https://baike.baidu.com/item/%E6%96%B0%E5%9B%9B%E5%86%9B%E5%86%9B%E9%83%A8%E6%97%A7%E5%9D%80' },
+                    { name: '新四军组建历史', url: 'https://zh.wikipedia.org/zh-cn/%E6%96%B0%E5%9B%9B%E5%86%9B' }
+                ],
+                presetQuestion: '为什么南方红军游击队要改编为新四军？这对抗战有什么意义？'
+            },
+            {
+                year: '1938-1940',
+                title: '东进抗日',
+                desc: '挺进华中敌后，建立抗日根据地，开展游击战争。新四军各部相继东进，深入敌后，发动群众，开展独立自主的游击战争，创建了苏南、皖南、皖中、豫东等抗日根据地。',
+                task: '分析新四军东进抗日战略的重要意义与历史影响，理解建立根据地的必要性，认识人民战争的力量',
+                images: dongjinImages,
+                videoLarge: 'https://www.bilibili.com/video/BV1t6xYzsEUU/',
+                videoCards: [
+                    { title: '新四军东进纪实', url: 'https://www.bilibili.com/video/BV1R8x1egEjG/', source: 'B站纪录片' }
+                ],
+                resources: [
+                    { name: '新四军东进北上', url: 'https://zhuanlan.zhihu.com/p/720419859' },
+                    { name: '东进抗日纪念馆', url: 'https://baike.baidu.com/item/%E6%96%B0%E5%9B%9B%E5%86%9B%E4%B8%9C%E8%BF%9B%E6%8A%97%E6%97%A5%E7%BA%AA%E5%BF%B5%E9%A6%86/8197226' }
+                ],
+                presetQuestion: '新四军东进抗日采取了什么战略？为什么选择向华中敌后发展？'
+            },
+            {
+                year: '1940',
+                title: '黄桥战役',
+                desc: '以少胜多的经典战役，巩固苏中抗日根据地。1940年10月，新四军在江苏黄桥地区粉碎了国民党顽固派的进攻，歼敌1.1万余人，奠定了苏北抗日根据地的基础，打开了华中抗战的新局面。',
+                task: '总结黄桥战役胜利的原因及其对华中抗战的影响，分析统战工作的作用，理解人民支持的重要性',
+                images: huangqiaoImages,
+                videoCards: [
+                    { title: '黄桥战役纪录片', url: 'http://baike.baidu.com/l/joslYOSD', source: '百度百科' },
+                    { title: '黄桥战役历史', url: 'http://baike.baidu.com/l/CweSiygU', source: '百度百科' }
+                ],
+                resources: [
+                    { name: '黄桥战役历史', url: 'https://baike.baidu.com/item/%E9%BB%84%E6%A1%A5%E6%88%98%E5%BD%B9' },
+                    { name: '黄桥战役纪念馆', url: 'https://baike.baidu.com/item/%E9%BB%84%E6%A1%A5%E6%88%98%E5%BD%B9%E7%BA%AA%E5%BF%B5%E9%A6%86' }
+                ],
+                presetQuestion: '黄桥战役为什么能以少胜多？有哪些关键因素？'
+            },
+            {
+                year: '1941',
+                title: '军部重建',
+                desc: '皖南事变后在盐城重建军部，继续坚持抗战。1941年1月，皖南事变爆发，新四军军部及所属部队遭受重大损失。同年1月20日，中共中央军委发布命令，重建新四军军部，陈毅任代军长，刘少奇任政治委员。',
+                task: '学习皖南事变经过及重建军部的历史意义，理解新四军的顽强精神，认识中国共产党在抗战中的中流砥柱作用',
+                resources: [
+                    { name: '皖南事变', url: 'https://baike.baidu.com/item/%E5%AE%97%E5%8D%97%E4%BA%8B%E5%8F%98' },
+                    { name: '新四军军部重建', url: 'https://baike.baidu.com/item/%E6%96%B0%E5%9B%9B%E5%86%9B%E5%86%9B%E9%83%A8%E9%87%8D%E5%BB%BA' }
+                ],
+                presetQuestion: '皖南事变是怎么回事？新四军如何在逆境中重建军部？'
+            },
+            {
+                year: '1941-1943',
+                title: '反扫荡斗争',
+                desc: '粉碎日伪军多次"扫荡"，坚持敌后游击战争。面对日伪军的残酷"扫荡"和"清乡"，新四军依靠人民群众，开展艰苦卓绝的反扫荡斗争，采取灵活机动的战术，多次粉碎敌人的进攻。',
+                task: '模拟设计一次反扫荡战术，分析其战术特点和群众基础的重要性，理解游击战的战略意义',
+                resources: [
+                    { name: '反扫荡斗争', url: 'https://baike.baidu.com/item/%E5%8F%8D%E6%89%AB%E6%8E%89%E6%88%98%E4%BA%89' },
+                    { name: '华中抗日根据地', url: 'https://baike.baidu.com/item/%E5%8D%8E%E4%B8%AD%E6%8A%97%E6%97%A5%E6%A0%B9%E6%8D%AE%E5%9C%B0' }
+                ],
+                presetQuestion: '新四军反扫荡斗争有哪些特点和成功经验？'
+            },
+            {
+                year: '1945',
+                title: '抗战胜利',
+                desc: '战略反攻，迎来抗日战争伟大胜利。1945年8月，日本宣布无条件投降。新四军在八年抗战中，共歼敌40余万人，建立了地跨苏、浙、皖、豫、鄂五省的抗日根据地，为抗战胜利作出了重要贡献。',
+                task: '总结新四军在抗日战争中的历史贡献，理解其战略地位，认识人民军队在民族解放战争中的作用',
+                resources: [
+                    { name: '抗战胜利', url: 'https://baike.baidu.com/item/%E6%8A%97%E6%97%A5%E6%88%98%E4%BA%89%E8%83%9C%E5%88%A9' },
+                    { name: '新四军抗战史', url: 'https://zh.wikipedia.org/zh-cn/%E6%96%B0%E5%9B%9B%E5%86%9B' }
+                ],
+                presetQuestion: '新四军在抗日战争中做出了哪些重要贡献？'
+            }
+        ];
+
+        function renderTimeline() {
+            const timeline = document.getElementById('timeline');
+            timeline.innerHTML = timelineData.map((item, index) => `
+                <div class="timeline-item" data-index="${index}">
+                    <div class="timeline-year">${item.year}</div>
+                    <div class="timeline-title">${item.title}</div>
+                </div>
+            `).join('');
+
+            document.querySelectorAll('.timeline-item').forEach(item => {
+                item.addEventListener('click', () => selectEvent(parseInt(item.dataset.index)));
+            });
+        }
+
+        function createCarousel(images) {
+            if (!images || images.length === 0) return '';
+            
+            return `
+                <div class="carousel-wrapper" onmouseenter="stopCarousel(this)" onmouseleave="startCarousel(this)">
+                    <button class="carousel-prev" onclick="prevSlide(this.parentElement)">‹</button>
+                    <div class="carousel-container">
+                        ${images.map((img, index) => `
+                            <div class="carousel-item">
+                                <img src="${img}" alt="图片${index + 1}" ondblclick="openImageViewer('${img}')" style="cursor: zoom-in;" onerror="this.src='https://picsum.photos/1000/500?random=${index}'">
+                            </div>
+                        `).join('')}
+                    </div>
+                    <button class="carousel-next" onclick="nextSlide(this.parentElement)">›</button>
+                    <div class="carousel-counter">1/${images.length}</div>
+                    <div class="carousel-indicators">
+                        ${images.map((_, index) => `
+                            <button class="carousel-indicator ${index === 0 ? 'active' : ''}" onclick="goToSlide(this.parentElement.parentElement, ${index})"></button>
+                        `).join('')}
+                    </div>
+                    <div class="carousel-hint">双击图片可放大查看</div>
+                </div>
+            `;
+        }
+
+        function openImageViewer(imageUrl) {
+            const viewer = document.createElement('div');
+            viewer.className = 'image-viewer';
+            viewer.innerHTML = `
+                <div class="image-viewer-overlay" onclick="closeImageViewer()"></div>
+                <div class="image-viewer-content">
+                    <button class="image-viewer-close" onclick="closeImageViewer()">×</button>
+                    <img src="${imageUrl}" alt="大图查看">
+                </div>
+            `;
+            document.body.appendChild(viewer);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeImageViewer() {
+            const viewer = document.querySelector('.image-viewer');
+            if (viewer) {
+                viewer.remove();
+                document.body.style.overflow = '';
+            }
+        }
+
+        function createVideoSection(event) {
+            if (!event.videoLarge && (!event.videoCards || event.videoCards.length === 0)) {
+                return '';
+            }
+            
+            let videoHtml = '<div class="video-section"><h3>视频资源</h3>';
+            
+            if (event.videoLarge) {
+                if (event.videoLarge.startsWith('http')) {
+                    videoHtml += `
+                    <div class="video-large-card" onclick="window.open('${event.videoLarge}', '_blank')">
+                        <div class="video-large-icon">▶️</div>
+                        <div class="video-large-info">
+                            <div class="video-large-title">${event.title || '视频资源'}</div>
+                            <div class="video-large-source">B站视频</div>
+                        </div>
+                    </div>
+                `;
+                } else {
+                    videoHtml += `<div class="video-large">${event.videoLarge}</div>`;
+                }
+            } else if (event.videoCards && event.videoCards.length >= 2) {
+                videoHtml += `
+                    <div class="video-large-card" onclick="window.open('${event.videoCards[0].url}', '_blank')">
+                        <div class="video-large-icon">▶️</div>
+                        <div class="video-large-info">
+                            <div class="video-large-title">${event.videoCards[0].title}</div>
+                            <div class="video-large-source">${event.videoCards[0].source}</div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            if (event.videoCards && event.videoCards.length > 0) {
+                const startIndex = event.videoLarge ? 0 : 1;
+                const cardsToShow = event.videoCards.slice(startIndex);
+                
+                if (cardsToShow.length > 0) {
+                    videoHtml += '<div class="video-cards">';
+                    cardsToShow.forEach((card, index) => {
+                        videoHtml += `
+                            <div class="video-card" onclick="window.open('${card.url}', '_blank')">
+                                <div class="video-icon">▶️</div>
+                                <div class="video-title">${card.title}</div>
+                                <div class="video-source">${card.source}</div>
+                            </div>
+                        `;
+                    });
+                    videoHtml += '</div>';
+                }
+            }
+            
+            videoHtml += '</div>';
+            return videoHtml;
+        }
+
+        function selectEvent(index) {
+            const event = timelineData[index];
+
+            document.querySelectorAll('.timeline-item').forEach((item, i) => {
+                item.classList.toggle('active', i === index);
+            });
+
+            document.getElementById('welcomePanel').style.display = 'none';
+
+            const detail = document.getElementById('eventDetail');
+            detail.classList.add('active');
+            
+            const carouselHtml = createCarousel(event.images);
+            const videoHtml = createVideoSection(event);
+            
+            const resourceHtml = event.resources ? event.resources.map(r => `
+                <a href="${r.url}" target="_blank" class="resource-link">
+                    🔗 ${r.name}
+                </a>
+            `).join('') : '';
+
+            detail.innerHTML = `
+                <div class="event-header">
+                    <h2>${event.title}</h2>
+                    <span class="year-tag">${event.year}年</span>
+                    <p class="desc">${event.desc}</p>
+                </div>
+
+                ${carouselHtml}
+
+                ${videoHtml}
+
+                <div class="task-section">
+                    <h3>学习任务</h3>
+                    <p class="task-text">${event.task}</p>
+                </div>
+
+                <div class="resource-section">
+                    <h3>学习资源</h3>
+                    ${resourceHtml}
+                </div>
+
+                <div class="ai-section">
+                    <h3>🔥 烽火问答</h3>
+                    <div class="custom-question">
+                        <h4>输入您的问题：</h4>
+                        <div class="question-input-group">
+                            <input type="text" class="question-input" id="customQuestion" placeholder="请输入您想了解的问题...">
+                            <button class="ask-btn" onclick="askCustomQuestion()">提问</button>
+                        </div>
+                    </div>
+                    <div class="preset-questions">
+                        <span class="preset-label">或选择预设问题：</span>
+                        <button class="preset-btn" onclick="askPresetQuestion('${event.presetQuestion.replace(/'/g, "\\'")}')">
+                            ${event.presetQuestion}
+                        </button>
+                    </div>
+                    <div class="ai-response" id="aiResponse"></div>
+                </div>
+            `;
+
+            initCarousels();
+        }
+
+        function initCarousels() {
+            document.querySelectorAll('.carousel-wrapper').forEach(wrapper => {
+                wrapper.currentIndex = 0;
+                startCarousel(wrapper);
+            });
+        }
+
+        function startCarousel(wrapper) {
+            stopCarousel(wrapper);
+            if (wrapper.querySelectorAll('.carousel-item').length > 1) {
+                wrapper.autoPlayTimer = setInterval(() => nextSlide(wrapper), 4000);
+            }
+        }
+
+        function stopCarousel(wrapper) {
+            if (wrapper.autoPlayTimer) {
+                clearInterval(wrapper.autoPlayTimer);
+                wrapper.autoPlayTimer = null;
+            }
+        }
+
+        function nextSlide(wrapper) {
+            const items = wrapper.querySelectorAll('.carousel-item');
+            wrapper.currentIndex = (wrapper.currentIndex + 1) % items.length;
+            updateCarousel(wrapper);
+        }
+
+        function prevSlide(wrapper) {
+            const items = wrapper.querySelectorAll('.carousel-item');
+            wrapper.currentIndex = (wrapper.currentIndex - 1 + items.length) % items.length;
+            updateCarousel(wrapper);
+        }
+
+        function goToSlide(wrapper, index) {
+            wrapper.currentIndex = index;
+            updateCarousel(wrapper);
+        }
+
+        function updateCarousel(wrapper) {
+            const container = wrapper.querySelector('.carousel-container');
+            const counter = wrapper.querySelector('.carousel-counter');
+            const indicators = wrapper.querySelectorAll('.carousel-indicator');
+            
+            container.style.transform = `translateX(-${wrapper.currentIndex * 100}%)`;
+            counter.textContent = `${wrapper.currentIndex + 1}/${indicators.length}`;
+            
+            indicators.forEach((ind, i) => {
+                ind.classList.toggle('active', i === wrapper.currentIndex);
+            });
+        }
+
+        async function askPresetQuestion(question) {
+            await callDeepSeekAPI(question);
+        }
+
+        async function askCustomQuestion() {
+            const input = document.getElementById('customQuestion');
+            const question = input.value.trim();
+            if (!question) {
+                alert('请输入问题');
+                return;
+            }
+            await callDeepSeekAPI(question);
+            input.value = '';
+        }
+
+        async function callDeepSeekAPI(question) {
+            const responseEl = document.getElementById('aiResponse');
+            const presetBtns = document.querySelectorAll('.preset-btn');
+            const askBtn = document.querySelector('.ask-btn');
+
+            responseEl.classList.remove('show');
+            responseEl.innerHTML = '<span class="loading"></span>正在思考中...';
+            responseEl.classList.add('show');
+
+            presetBtns.forEach(btn => btn.disabled = true);
+            askBtn.disabled = true;
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${API_KEY}`
+                    },
+                    body: JSON.stringify({
+                        model: MODEL,
+                        messages: [
+                            {
+                                role: 'system',
+                                content: '你是一位风趣幽默的新四军历史教育专家，说话带点俏皮但绝对尊重历史事实。讲解抗战历史时要生动有趣，偶尔可以开点小玩笑，但必须保证史实准确。就像给朋友讲故事一样轻松愉快！'
+                            },
+                            {
+                                role: 'user',
+                                content: question
+                            }
+                        ],
+                        stream: false
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API请求失败: ${response.status}`);
+                }
+
+                const data = await response.json();
+                const answer = data.choices[0].message.content;
+
+                responseEl.innerHTML = answer.replace(/\n/g, '<br>');
+
+            } catch (error) {
+                console.error('API Error:', error);
+                responseEl.innerHTML = `
+                    <div class="error-msg">
+                        ⚠️ 获取回答失败：${error.message}<br>
+                        请检查 API Key 是否正确配置，或确认网络连接正常。
+                    </div>
+                `;
+            } finally {
+                presetBtns.forEach(btn => btn.disabled = false);
+                askBtn.disabled = false;
+            }
+        }
+
+        renderTimeline();
+    </script>
+</body>
+</html>
