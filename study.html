@@ -1,0 +1,1657 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新四军抗战文化导学 · 我的学习</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+            background: linear-gradient(135deg, #0d0d1a 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* 粒子背景 */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(245, 197, 24, 0.3);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); opacity: 0.3; }
+            50% { transform: translateY(-50px) translateX(20px); opacity: 0.8; }
+        }
+
+        /* Banner 样式 */
+        .banner {
+            position: relative;
+            padding: 60px 20px 80px;
+            background: linear-gradient(180deg, rgba(192, 36, 37, 0.4) 0%, rgba(192, 36, 37, 0.1) 50%, transparent 100%);
+            text-align: center;
+            overflow: hidden;
+            border-bottom: 1px solid rgba(245, 197, 24, 0.2);
+        }
+
+        .banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1585314062745-f7dc91529756?q=80') center/cover;
+            opacity: 0.08;
+            filter: grayscale(1);
+        }
+
+        .banner-glow {
+            position: absolute;
+            top: -50%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 300px;
+            background: radial-gradient(ellipse, rgba(192, 36, 37, 0.3) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; transform: translateX(-50%) scale(1); }
+            50% { opacity: 0.8; transform: translateX(-50%) scale(1.1); }
+        }
+
+        .banner h1 {
+            position: relative;
+            font-size: 36px;
+            font-weight: 700;
+            color: #f5c518;
+            text-shadow: 2px 2px 10px rgba(192, 36, 37, 0.5);
+            margin-bottom: 15px;
+            z-index: 1;
+        }
+
+        .banner .subtitle {
+            position: relative;
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.8);
+            font-style: italic;
+            z-index: 1;
+        }
+
+        /* 重新学习按钮 */
+        .reset-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background: rgba(26, 26, 46, 0.9);
+            border: 1px solid rgba(192, 36, 37, 0.3);
+            border-radius: 20px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .reset-btn:hover {
+            background: rgba(192, 36, 37, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(192, 36, 37, 0.3);
+        }
+
+        /* 主要内容区 */
+        .main-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* 模块通用样式 */
+        .section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 22px;
+            color: #f5c518;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-left: 15px;
+            position: relative;
+        }
+
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 24px;
+            background: linear-gradient(180deg, #c02425, #f5c518);
+            border-radius: 2px;
+        }
+
+        /* 学习任务卡片 */
+        .task-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .task-card {
+            background: rgba(26, 26, 46, 0.8);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid rgba(192, 36, 37, 0.3);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .task-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #c02425, #f5c518);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .task-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .task-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(192, 36, 37, 0.3), 0 0 30px rgba(245, 197, 24, 0.1);
+            border-color: rgba(245, 197, 24, 0.5);
+        }
+
+        .task-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .task-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(192, 36, 37, 0.3), rgba(245, 197, 24, 0.2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+        }
+
+        .task-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .task-list {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .task-list li {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            padding: 8px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .task-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #f5c518;
+        }
+
+        .task-progress {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #c02425, #f5c518);
+            border-radius: 3px;
+            transition: width 1s ease;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #c02425, #a31a1a);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(192, 36, 37, 0.4);
+        }
+
+        .btn-secondary {
+            width: 100%;
+            padding: 14px 24px;
+            border: 2px solid rgba(245, 197, 24, 0.5);
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(245, 197, 24, 0.1);
+            color: #f5c518;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(245, 197, 24, 0.3);
+            background: rgba(245, 197, 24, 0.2);
+        }
+
+        .task-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        /* 学习反思模块 */
+        .reflection-card {
+            background: rgba(26, 26, 46, 0.85);
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid rgba(192, 36, 37, 0.3);
+            backdrop-filter: blur(15px);
+        }
+
+        .reflection-intro {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .reflection-questions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin-bottom: 35px;
+        }
+
+        .question-card {
+            background: rgba(192, 36, 37, 0.1);
+            border-radius: 12px;
+            padding: 25px;
+            border-left: 3px solid #f5c518;
+            transition: all 0.3s ease;
+        }
+
+        .question-card:hover {
+            background: rgba(192, 36, 37, 0.2);
+            transform: translateX(5px);
+        }
+
+        .question-card p {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+        }
+
+        .btn-submit {
+            display: block;
+            margin: 0 auto;
+            padding: 16px 45px;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            background: linear-gradient(135deg, #c02425 0%, #f5c518 100%);
+            color: #1a1a2e;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(192, 36, 37, 0.4);
+        }
+
+        .btn-submit:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(192, 36, 37, 0.5), 0 0 20px rgba(245, 197, 24, 0.3);
+        }
+
+        /* 我的成长模块 */
+        .growth-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .growth-card {
+            background: rgba(26, 26, 46, 0.8);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid rgba(192, 36, 37, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .growth-card-title {
+            font-size: 16px;
+            color: #f5c518;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        /* 环形进度图 */
+        .progress-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .circle-progress {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .circle-bg {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: conic-gradient(#c02425 0deg, #f5c518 360deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            animation: rotate 3s linear infinite;
+        }
+
+        .circle-bg::before {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #1a1a2e;
+        }
+
+        .circle-value {
+            position: relative;
+            z-index: 1;
+            font-size: 18px;
+            font-weight: 700;
+            color: #f5c518;
+        }
+
+        .circle-label {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* 标签云 */
+        .tag-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .tag {
+            padding: 10px 20px;
+            border-radius: 25px;
+            background: rgba(245, 197, 24, 0.1);
+            border: 1px solid rgba(245, 197, 24, 0.3);
+            color: #f5c518;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tag:hover {
+            background: rgba(245, 197, 24, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 0 20px rgba(245, 197, 24, 0.3);
+        }
+
+        .tag.inactive {
+            opacity: 0.3;
+            filter: grayscale(1);
+        }
+
+        .tag.active {
+            animation: tagGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes tagGlow {
+            0%, 100% { box-shadow: 0 0 10px rgba(245, 197, 24, 0.3); }
+            50% { box-shadow: 0 0 20px rgba(245, 197, 24, 0.6); }
+        }
+
+        /* 徽章系统 */
+        .badge-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+        }
+
+        .badge-card {
+            background: rgba(26, 26, 46, 0.9);
+            border-radius: 14px;
+            padding: 20px;
+            text-align: center;
+            border: 2px solid rgba(245, 197, 24, 0.3);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .badge-card.inactive {
+            opacity: 0.4;
+            filter: grayscale(1);
+        }
+
+        .badge-card.active {
+            border-color: rgba(245, 197, 24, 0.8);
+            animation: badgePulse 2s ease-in-out infinite;
+        }
+
+        .badge-card.active:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(245, 197, 24, 0.3);
+        }
+
+        @keyframes badgePulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(245, 197, 24, 0.3); }
+            50% { box-shadow: 0 0 25px rgba(245, 197, 24, 0.6); }
+        }
+
+        .badge-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(245, 197, 24, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .badge-card:hover::before {
+            opacity: 1;
+        }
+
+        .badge-icon {
+            font-size: 40px;
+            margin-bottom: 12px;
+            animation: shimmer 2s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { filter: drop-shadow(0 0 5px rgba(245, 197, 24, 0.5)); }
+            50% { filter: drop-shadow(0 0 15px rgba(245, 197, 24, 0.8)); }
+        }
+
+        .badge-title {
+            font-size: 14px;
+            color: #f5c518;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .badge-desc {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* 学习报告模块 */
+        .report-card {
+            background: rgba(26, 26, 46, 0.85);
+            border-radius: 20px;
+            padding: 35px;
+            border: 1px solid rgba(245, 197, 24, 0.3);
+            backdrop-filter: blur(15px);
+        }
+
+        .report-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .report-item {
+            text-align: center;
+            padding: 20px;
+            background: rgba(192, 36, 37, 0.1);
+            border-radius: 12px;
+        }
+
+        .report-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #f5c518;
+            margin-bottom: 8px;
+        }
+
+        .report-label {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .report-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .report-title {
+            font-size: 20px;
+            color: #f5c518;
+            margin: 0;
+        }
+
+        .report-icon {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .report-total {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 5px;
+        }
+
+        .report-progress {
+            margin-bottom: 25px;
+        }
+
+        .progress-title {
+            font-size: 16px;
+            color: #f5c518;
+            margin-bottom: 15px;
+        }
+
+        .progress-bar-container {
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #c02425, #f5c518);
+            border-radius: 6px;
+            transition: width 1s ease;
+        }
+
+        .progress-text {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .report-keywords {
+            margin-bottom: 25px;
+        }
+
+        .keywords-title {
+            font-size: 16px;
+            color: #f5c518;
+            margin-bottom: 15px;
+        }
+
+        .keywords-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .keyword-tag {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .keyword-tag.active {
+            background: linear-gradient(135deg, rgba(192, 36, 37, 0.8), rgba(245, 197, 24, 0.6));
+            color: #fff;
+            box-shadow: 0 0 15px rgba(245, 197, 24, 0.4);
+        }
+
+        .keyword-tag.inactive {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .report-insight {
+            background: rgba(245, 197, 24, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-left: 4px solid #f5c518;
+        }
+
+        .insight-title {
+            font-size: 16px;
+            color: #f5c518;
+            margin-bottom: 12px;
+        }
+
+        .report-insight p {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+        }
+
+        .btn-report {
+            display: block;
+            margin: 0 auto;
+            padding: 15px 40px;
+            border: 2px solid #f5c518;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            background: transparent;
+            color: #f5c518;
+            transition: all 0.3s ease;
+        }
+
+        .btn-report:hover {
+            background: rgba(245, 197, 24, 0.1);
+            box-shadow: 0 0 20px rgba(245, 197, 24, 0.3);
+            transform: scale(1.02);
+        }
+
+        /* 弹窗 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.95), rgba(42, 42, 74, 0.95));
+            border-radius: 20px;
+            padding: 40px 50px;
+            text-align: center;
+            border: 1px solid rgba(245, 197, 24, 0.5);
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+            max-width: 400px;
+            width: 90%;
+            backdrop-filter: blur(20px);
+        }
+
+        .modal-overlay.show .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 22px;
+            color: #f5c518;
+            margin-bottom: 15px;
+        }
+
+        .modal-text {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 25px;
+        }
+
+        .modal-warning {
+            font-size: 13px;
+            color: rgba(245, 197, 24, 0.9);
+            margin-bottom: 20px;
+            padding: 12px;
+            background: rgba(245, 197, 24, 0.1);
+            border-radius: 8px;
+            border-left: 3px solid #f5c518;
+        }
+
+        .modal-badge {
+            font-size: 60px;
+            margin: 20px 0;
+            animation: badgeFloat 2s ease-in-out infinite;
+        }
+
+        @keyframes badgeFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .btn-close {
+            padding: 12px 35px;
+            border: none;
+            border-radius: 25px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            background: linear-gradient(135deg, #c02425, #a31a1a);
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        .btn-close:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(192, 36, 37, 0.4);
+        }
+
+        /* Footer */
+        .footer {
+            position: relative;
+            padding: 40px 20px;
+            text-align: center;
+            background: linear-gradient(0deg, rgba(192, 36, 37, 0.2) 0%, transparent 100%);
+            border-top: 1px solid rgba(245, 197, 24, 0.2);
+            overflow: hidden;
+        }
+
+        .footer-text {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.7);
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #c02425, #f5c518, #c02425, transparent);
+            animation: flow 3s ease-in-out infinite;
+        }
+
+        @keyframes flow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* 导航链接 */
+        .nav-links {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 12px;
+            z-index: 100;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: rgba(26, 26, 46, 0.9);
+            border-radius: 30px;
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            border: 1px solid rgba(192, 36, 37, 0.3);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-link:hover {
+            background: rgba(192, 36, 37, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(192, 36, 37, 0.3);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .banner h1 {
+                font-size: 26px;
+            }
+
+            .banner {
+                padding: 40px 15px 60px;
+            }
+
+            .main-content {
+                padding: 25px 15px;
+            }
+
+            .section-title {
+                font-size: 18px;
+            }
+
+            .task-card,
+            .reflection-card,
+            .growth-card,
+            .report-card {
+                padding: 20px;
+            }
+
+            .growth-section {
+                grid-template-columns: 1fr;
+            }
+
+            .reflection-questions {
+                grid-template-columns: 1fr;
+            }
+
+            .progress-container {
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+
+            .report-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .nav-links {
+                position: static;
+                justify-content: center;
+                margin-top: 30px;
+                padding-bottom: 20px;
+            }
+
+            .reset-btn {
+                top: 15px;
+                right: 15px;
+                padding: 8px 15px;
+                font-size: 12px;
+            }
+        }
+
+        /* 滚动渐入动画 */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- 粒子背景 -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Banner -->
+    <header class="banner">
+        <div class="banner-glow"></div>
+        <h1>📚 我的学习</h1>
+        <p class="subtitle">完成学习 · 记录成长 · 传承铁军精神</p>
+    </header>
+
+    <!-- 重新学习按钮 -->
+    <button class="reset-btn" onclick="resetLearning()">🔄 重新学习</button>
+
+    <!-- 主要内容 -->
+    <main class="main-content">
+        <!-- 学习任务模块 -->
+        <section class="section animate-on-scroll">
+            <h2 class="section-title">🟥 学习任务</h2>
+            <div class="task-grid">
+                <!-- 任务卡片1 -->
+                <div class="task-card">
+                    <div class="task-header">
+                        <div class="task-icon">🏛️</div>
+                        <div class="task-title">文物档案</div>
+                    </div>
+                    <ul class="task-list">
+                        <li>探索数字展馆</li>
+                        <li>浏览文物档案</li>
+                        <li>查看历史地图</li>
+                    </ul>
+                    <div class="task-progress">
+                        <div class="progress-bar" id="timelineProgress" style="width: 0%"></div>
+                    </div>
+                    <div class="task-buttons">
+                        <button class="btn-primary" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzY4NDI5NDgxMQ==&action=getalbum&album_id=4507362091065409536#wechat_redirect', '_blank')">📚 阅读档案</button>
+                        <button class="btn-secondary" onclick="openGaodeMap()">🗺️ 历史地图</button>
+                    </div>
+                </div>
+
+                <!-- 任务卡片2 -->
+                <div class="task-card">
+                    <div class="task-header">
+                        <div class="task-icon">👥</div>
+                        <div class="task-title">铁军人物志</div>
+                    </div>
+                    <ul class="task-list">
+                        <li>阅读叶挺人物故事</li>
+                        <li>阅读粟裕人物故事</li>
+                        <li>完成学习反思</li>
+                    </ul>
+                    <div class="task-progress">
+                        <div class="progress-bar" id="heroesProgress" style="width: 0%"></div>
+                    </div>
+                    <button class="btn-primary" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzY4NDI5NDgxMQ==&action=getalbum&album_id=4507380734528585729#wechat_redirect', '_blank')">进入学习</button>
+                </div>
+
+                <!-- 任务卡片3 -->
+                <div class="task-card">
+                    <div class="task-header">
+                        <div class="task-icon">🎬</div>
+                        <div class="task-title">铁军微课</div>
+                    </div>
+                    <ul class="task-list">
+                        <li>认真观看微课</li>
+                        <li>完成学习任务</li>
+                    </ul>
+                    <div class="task-progress">
+                        <div class="progress-bar" id="videoProgress" style="width: 0%"></div>
+                    </div>
+                    <button class="btn-primary" onclick="window.open('https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzY4NDI5NDgxMQ==&action=getalbum&album_id=4507322949065506819#wechat_redirect', '_blank')">开始观看</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 学习反思模块 -->
+        <section class="section animate-on-scroll">
+            <h2 class="section-title">✍️ 学习反思</h2>
+            <div class="reflection-card">
+                <p class="reflection-intro">"历史不仅需要被了解，也值得被思考。"</p>
+                <div class="reflection-questions">
+                    <div class="question-card">
+                        <p>如果是你，<br>会如何面对复杂局势？</p>
+                    </div>
+                    <div class="question-card">
+                        <p>为什么信念能够支撑人坚持下去？</p>
+                    </div>
+                    <div class="question-card">
+                        <p>你从新四军精神中学到了什么？</p>
+                    </div>
+                </div>
+                <button class="btn-submit" onclick="openQuestionnaire()">提交我的思考</button>
+            </div>
+        </section>
+
+        <!-- 我的成长模块 -->
+        <section class="section animate-on-scroll">
+            <h2 class="section-title">🏅 我的成长</h2>
+            <div class="growth-section">
+                <!-- 学习完成情况 -->
+                <div class="growth-card">
+                    <h3 class="growth-card-title">📊 学习完成情况</h3>
+                    <div class="progress-container">
+                        <div class="circle-progress">
+                            <div class="circle-bg" id="timelineCircle">
+                                <span class="circle-value" id="timelineValue">0%</span>
+                            </div>
+                            <span class="circle-label">时间轴学习</span>
+                        </div>
+                        <div class="circle-progress">
+                            <div class="circle-bg" id="heroesCircle">
+                                <span class="circle-value" id="heroesValue">0%</span>
+                            </div>
+                            <span class="circle-label">人物学习</span>
+                        </div>
+                        <div class="circle-progress">
+                            <div class="circle-bg" id="videoCircle">
+                                <span class="circle-value" id="videoValue">0%</span>
+                            </div>
+                            <span class="circle-label">微课学习</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 精神关键词 -->
+                <div class="growth-card">
+                    <h3 class="growth-card-title">🏷️ 我的精神关键词</h3>
+                    <div class="tag-cloud">
+                        <span class="tag inactive" id="tag-responsibility">责任</span>
+                        <span class="tag inactive" id="tag-belief">信念</span>
+                        <span class="tag inactive" id="tag-persistence">坚持</span>
+                        <span class="tag inactive" id="tag-responsibility2">担当</span>
+                        <span class="tag inactive" id="tag-struggle">奋斗</span>
+                        <span class="tag inactive" id="tag-unity">团结</span>
+                        <span class="tag inactive" id="tag-wisdom">智慧</span>
+                        <span class="tag inactive" id="tag-courage">勇气</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 铁军徽章系统 -->
+            <div class="badge-grid">
+                <div class="badge-card inactive" id="badge-beginner">
+                    <div class="badge-icon">🎖️</div>
+                    <div class="badge-title">铁军初学者</div>
+                    <div class="badge-desc">完成首次学习任务</div>
+                </div>
+                <div class="badge-card inactive" id="badge-explorer">
+                    <div class="badge-icon">🎖️</div>
+                    <div class="badge-title">战役探索者</div>
+                    <div class="badge-desc">完成黄桥战役学习</div>
+                </div>
+                <div class="badge-card inactive" id="badge-inheritor">
+                    <div class="badge-icon">🎖️</div>
+                    <div class="badge-title">精神传承者</div>
+                    <div class="badge-desc">提交学习反思</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 学习报告模块 -->
+        <section class="section animate-on-scroll">
+            <h2 class="section-title">📄 铁军学习成长报告</h2>
+            <div class="report-card">
+                <div class="report-header">
+                    <h3 class="report-title">📊 我的学习数据</h3>
+                </div>
+                <div class="report-grid">
+                    <div class="report-item">
+                        <div class="report-icon">📚</div>
+                        <div class="report-value" id="completedCount">0</div>
+                        <div class="report-label">已完成学习数</div>
+                        <div class="report-total">/4</div>
+                    </div>
+                    <div class="report-item">
+                        <div class="report-icon">🏅</div>
+                        <div class="report-value" id="badgeCount">0</div>
+                        <div class="report-label">已获得徽章</div>
+                        <div class="report-total">枚</div>
+                    </div>
+                    <div class="report-item">
+                        <div class="report-icon">💡</div>
+                        <div class="report-value" id="keywordCount">0</div>
+                        <div class="report-label">已激活关键词</div>
+                        <div class="report-total">/8</div>
+                    </div>
+                    <div class="report-item">
+                        <div class="report-icon">🎯</div>
+                        <div class="report-value" id="currentStage">入门</div>
+                        <div class="report-label">当前学习阶段</div>
+                        <div class="report-total"></div>
+                    </div>
+                </div>
+                
+                <div class="report-progress">
+                    <h4 class="progress-title">📈 学习进度</h4>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="overallProgress"></div>
+                    </div>
+                    <div class="progress-text">总体完成度：<span id="overallPercent">0%</span></div>
+                </div>
+                
+                <div class="report-keywords">
+                    <h4 class="keywords-title">💫 已激活精神关键词</h4>
+                    <div class="keywords-list" id="activeKeywordsList">
+                        <span class="keyword-tag inactive">点击学习激活关键词</span>
+                    </div>
+                </div>
+                
+                <div class="report-insight">
+                    <h4 class="insight-title">💭 我的学习感悟</h4>
+                    <p id="learningInsight">开始你的学习之旅，记录你的感悟...</p>
+                </div>
+                
+                <button class="btn-report" onclick="generateReport()">🎁 生成学习报告</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-line"></div>
+        <p class="footer-text">铭记历史 · 珍爱和平 · 传承铁军精神</p>
+    </footer>
+
+    <!-- 导航链接 -->
+    <div class="nav-links">
+        <a href="index.html" class="nav-link">
+            <span>🗺️</span>
+            <span>时间轴</span>
+        </a>
+        <a href="study.html" class="nav-link" style="background: rgba(192, 36, 37, 0.3);">
+            <span>📚</span>
+            <span>我的学习</span>
+        </a>
+    </div>
+
+    <!-- 学习成功弹窗 -->
+    <div class="modal-overlay" id="successModal">
+        <div class="modal-content">
+            <div class="modal-icon">🎉</div>
+            <h3 class="modal-title">学习记录成功！</h3>
+            <p class="modal-text" id="successText">已完成：叶挺人物学习</p>
+            <button class="btn-close" onclick="closeModal('successModal')">确定</button>
+        </div>
+    </div>
+
+    <!-- 徽章获得弹窗 -->
+    <div class="modal-overlay" id="badgeModal">
+        <div class="modal-content">
+            <div class="modal-icon">🎉</div>
+            <h3 class="modal-title">提交成功</h3>
+            <div class="modal-badge">🎖️</div>
+            <p class="modal-text">获得"精神传承者"徽章</p>
+            <button class="btn-close" onclick="closeModal('badgeModal')">确定</button>
+        </div>
+    </div>
+
+    <!-- 确认反思提交弹窗 -->
+    <div class="modal-overlay" id="confirmReflectionModal">
+        <div class="modal-content">
+            <div class="modal-icon">📝</div>
+            <h3 class="modal-title">确认提交反思</h3>
+            <p class="modal-text">您已打开金数据问卷，请在问卷填写完成后点击下方按钮确认提交。</p>
+            <button class="btn-close" onclick="confirmReflection()">✅ 我已完成问卷提交</button>
+            <button class="btn-close" onclick="closeModal('confirmReflectionModal')" style="margin-top: 10px; background: rgba(255,255,255,0.2);">稍后确认</button>
+        </div>
+    </div>
+
+    <!-- 学习报告弹窗 -->
+    <div class="modal-overlay" id="reportModal">
+        <div class="modal-content">
+            <div class="modal-icon">🎉</div>
+            <h3 class="modal-title">学习报告生成成功</h3>
+            <p class="modal-text">学习报告生成成功，请截图保存。</p>
+            <button class="btn-close" onclick="closeModal('reportModal')">确定</button>
+        </div>
+    </div>
+
+    <!-- 重置确认弹窗 -->
+    <div class="modal-overlay" id="resetModal">
+        <div class="modal-content">
+            <div class="modal-icon">⚠️</div>
+            <h3 class="modal-title">确认重置</h3>
+            <p class="modal-text">确定要清空所有学习记录吗？</p>
+            <p class="modal-warning">⚠️ 注意：网页学习记录将重置，但金数据问卷中的填写记录需要您手动在金数据后台清除。</p>
+            <button class="btn-close" onclick="confirmReset()">确定重置</button>
+            <button class="btn-close" onclick="closeModal('resetModal')" style="margin-top: 10px; background: rgba(255,255,255,0.2);">取消</button>
+        </div>
+    </div>
+
+    <script>
+        // localStorage 数据结构
+        const STORAGE_KEY = 'newfourtharmy_learning';
+
+        // 学习任务对应关系表 (7个独立任务)
+        const TASK_MAPPING = {
+            // 文物档案 (2个任务)
+            'archive_hq': { name: '黄桥战役档案', type: 'archive', keywords: ['persistence', 'unity'] },
+            'archive_army': { name: '军队组建档案', type: 'archive', keywords: ['belief', 'unity'] },
+            
+            // 铁军人物志 (2个任务)
+            'yeting': { name: '叶挺人物学习', type: 'hero', keywords: ['responsibility', 'responsibility2'] },
+            'suyu': { name: '粟裕人物学习', type: 'hero', keywords: ['wisdom', 'courage'] },
+            
+            // 铁军微课 (2个任务)
+            'video_hq': { name: '黄桥战役微课', type: 'video', keywords: ['persistence', 'struggle'] },
+            'video_army': { name: '军队组建微课', type: 'video', keywords: ['belief', 'struggle'] },
+            
+            // 学习反思
+            'reflection': { name: '学习反思', type: 'reflection', keywords: [] }
+        };
+
+        // 初始化学习数据
+        function initLearningData() {
+            const data = localStorage.getItem(STORAGE_KEY);
+            if (!data) {
+                const initialData = {
+                    // 文物档案
+                    archive_hq: false,      // 黄桥战役档案
+                    archive_army: false,    // 军队组建档案
+                    
+                    // 铁军人物志
+                    yeting: false,          // 叶挺
+                    suyu: false,            // 粟裕
+                    
+                    // 铁军微课
+                    video_hq: false,        // 黄桥战役微课
+                    video_army: false,      // 军队组建微课
+                    
+                    // 学习反思
+                    reflection: false,      // 学习反思
+                    
+                    activeKeywords: [],
+                    completedTasks: []
+                };
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(initialData));
+                return initialData;
+            }
+            return JSON.parse(data);
+        }
+
+        // 保存学习数据
+        function saveLearningData(data) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        }
+
+        // 处理URL参数
+        function handleURLParams() {
+            const params = new URLSearchParams(window.location.search);
+            const task = params.get('task');
+            
+            if (task && TASK_MAPPING[task]) {
+                const taskInfo = TASK_MAPPING[task];
+                const data = initLearningData();
+                
+                // 直接标记对应任务完成（7个独立任务）
+                data[task] = true;
+                
+                // 激活关键词
+                taskInfo.keywords.forEach(keyword => {
+                    if (!data.activeKeywords.includes(keyword)) {
+                        data.activeKeywords.push(keyword);
+                    }
+                });
+                
+                // 记录完成的任务
+                if (!data.completedTasks.includes(task)) {
+                    data.completedTasks.push(task);
+                }
+                
+                saveLearningData(data);
+                
+                // 显示成功弹窗
+                showSuccessModal(taskInfo.name);
+                
+                // 清除URL参数
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+            
+            updateUI();
+        }
+
+        // 显示成功弹窗
+        function showSuccessModal(taskName) {
+            const modal = document.getElementById('successModal');
+            const text = document.getElementById('successText');
+            text.textContent = `已完成：${taskName}`;
+            modal.classList.add('show');
+            
+            setTimeout(() => {
+                closeModal('successModal');
+            }, 3000);
+        }
+
+        // 显示徽章获得弹窗
+        function showBadgeModal() {
+            const modal = document.getElementById('badgeModal');
+            modal.classList.add('show');
+        }
+
+        // 关闭弹窗
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.remove('show');
+        }
+
+        // 更新UI
+        function updateUI() {
+            const data = initLearningData();
+            
+            // 文物档案进度：黄桥战役档案 + 军队组建档案（各50%）
+            const archiveProgress = ((data.archive_hq ? 1 : 0) + (data.archive_army ? 1 : 0)) / 2 * 100;
+            
+            // 铁军人物志进度：叶挺 + 粟裕（各50%）
+            const heroesProgress = ((data.yeting ? 1 : 0) + (data.suyu ? 1 : 0)) / 2 * 100;
+            
+            // 铁军微课进度：黄桥战役微课 + 军队组建微课（各50%）
+            const videoProgress = ((data.video_hq ? 1 : 0) + (data.video_army ? 1 : 0)) / 2 * 100;
+            
+            // 更新进度条
+            document.getElementById('timelineProgress').style.width = archiveProgress + '%';
+            document.getElementById('heroesProgress').style.width = heroesProgress + '%';
+            document.getElementById('videoProgress').style.width = videoProgress + '%';
+            
+            // 更新环形进度
+            updateCircleProgress('timelineCircle', 'timelineValue', archiveProgress);
+            updateCircleProgress('heroesCircle', 'heroesValue', heroesProgress);
+            updateCircleProgress('videoCircle', 'videoValue', videoProgress);
+            
+            // 更新关键词
+            updateKeywords(data.activeKeywords);
+            
+            // 更新徽章
+            updateBadges(data);
+            
+            // 更新学习报告
+            updateReport(data);
+        }
+
+        // 更新环形进度
+        function updateCircleProgress(circleId, valueId, percentage) {
+            const circle = document.getElementById(circleId);
+            const value = document.getElementById(valueId);
+            
+            circle.style.background = `conic-gradient(#c02425 ${percentage * 3.6}deg, #f5c518 ${percentage * 3.6}deg 360deg)`;
+            value.textContent = percentage + '%';
+        }
+
+        // 更新关键词
+        function updateKeywords(activeKeywords) {
+            const keywordMap = {
+                'responsibility': 'tag-responsibility',
+                'belief': 'tag-belief',
+                'persistence': 'tag-persistence',
+                'responsibility2': 'tag-responsibility2',
+                'struggle': 'tag-struggle',
+                'unity': 'tag-unity',
+                'wisdom': 'tag-wisdom',
+                'courage': 'tag-courage'
+            };
+            
+            Object.keys(keywordMap).forEach(key => {
+                const tag = document.getElementById(keywordMap[key]);
+                if (activeKeywords.includes(key)) {
+                    tag.classList.remove('inactive');
+                    tag.classList.add('active');
+                }
+            });
+        }
+
+        // 更新徽章
+        function updateBadges(data) {
+            // 7个独立任务完成数
+            const completedCount = (data.archive_hq ? 1 : 0) + 
+                                 (data.archive_army ? 1 : 0) + 
+                                 (data.yeting ? 1 : 0) + 
+                                 (data.suyu ? 1 : 0) + 
+                                 (data.video_hq ? 1 : 0) + 
+                                 (data.video_army ? 1 : 0) + 
+                                 (data.reflection ? 1 : 0);
+            
+            // 铁军初学者：完成任意学习
+            if (completedCount > 0) {
+                const badge = document.getElementById('badge-beginner');
+                badge.classList.remove('inactive');
+                badge.classList.add('active');
+            }
+            
+            // 战役探索者：完成黄桥战役微课
+            if (data.video_hq) {
+                const badge = document.getElementById('badge-explorer');
+                badge.classList.remove('inactive');
+                badge.classList.add('active');
+            }
+            
+            // 精神传承者：完成学习反思
+            if (data.reflection) {
+                const badge = document.getElementById('badge-inheritor');
+                badge.classList.remove('inactive');
+                badge.classList.add('active');
+            }
+        }
+
+        // 更新学习报告
+        function updateReport(data) {
+            // 学习数量：7个独立任务
+            const completedCount = (data.archive_hq ? 1 : 0) + 
+                                 (data.archive_army ? 1 : 0) + 
+                                 (data.yeting ? 1 : 0) + 
+                                 (data.suyu ? 1 : 0) + 
+                                 (data.video_hq ? 1 : 0) + 
+                                 (data.video_army ? 1 : 0) + 
+                                 (data.reflection ? 1 : 0);
+            
+            // 徽章数量：3个
+            const badgeCount = (completedCount > 0 ? 1 : 0) + 
+                              (data.video_hq ? 1 : 0) + 
+                              (data.reflection ? 1 : 0);
+            
+            const keywordCount = data.activeKeywords.length;
+            
+            // 计算总体进度 (7个任务)
+            const totalProgress = Math.round((completedCount / 7) * 100);
+            
+            let stage = '入门';
+            if (completedCount >= 7) {
+                stage = '精通';
+            } else if (completedCount >= 5) {
+                stage = '进阶';
+            } else if (completedCount >= 3) {
+                stage = '初级';
+            } else if (completedCount >= 1) {
+                stage = '入门';
+            }
+            
+            // 更新数据显示
+            document.getElementById('completedCount').textContent = completedCount;
+            document.getElementById('badgeCount').textContent = badgeCount;
+            document.getElementById('keywordCount').textContent = keywordCount;
+            document.getElementById('currentStage').textContent = stage;
+            
+            // 更新总体进度条
+            document.getElementById('overallProgress').style.width = totalProgress + '%';
+            document.getElementById('overallPercent').textContent = totalProgress + '%';
+            
+            // 更新已激活关键词显示
+            updateActiveKeywordsDisplay(data.activeKeywords);
+            
+            // 更新学习感悟
+            updateLearningInsight(completedCount);
+        }
+
+        // 更新已激活关键词显示
+        function updateActiveKeywordsDisplay(activeKeywords) {
+            const keywordsList = document.getElementById('activeKeywordsList');
+            const keywordDisplayMap = {
+                'responsibility': '责任',
+                'responsibility2': '担当',
+                'wisdom': '智慧',
+                'courage': '勇气',
+                'belief': '信念',
+                'unity': '团结',
+                'persistence': '坚持',
+                'struggle': '奋斗'
+            };
+            
+            if (activeKeywords.length === 0) {
+                keywordsList.innerHTML = '<span class="keyword-tag inactive">点击学习激活关键词</span>';
+                return;
+            }
+            
+            let html = '';
+            Object.keys(keywordDisplayMap).forEach(keywordId => {
+                const isActive = activeKeywords.includes(keywordId);
+                html += `<span class="keyword-tag ${isActive ? 'active' : 'inactive'}">${keywordDisplayMap[keywordId]}</span>`;
+            });
+            
+            keywordsList.innerHTML = html;
+        }
+
+        // 更新学习感悟
+        function updateLearningInsight(completedCount) {
+            const insight = document.getElementById('learningInsight');
+            const insights = [
+                '开始你的学习之旅，记录你的感悟...',
+                '通过学习，你已经迈出了了解新四军历史的第一步！',
+                '继续学习，深入了解铁军精神的内涵。',
+                '你已经完成了部分学习任务，继续加油！',
+                '你已经完成了近半学习任务，进步很大！',
+                '继续坚持，你已经完成了大部分学习！',
+                '🎉 再接再厉！距离完成全部学习仅一步之遥！',
+                '🎉 恭喜！你已完成全部学习任务，成为真正的精神传承者！'
+            ];
+            
+            let index = Math.min(completedCount, 7);
+            insight.textContent = insights[index];
+        }
+
+        // 打开高德地图页面
+        function openGaodeMap() {
+            window.open('../gaode/index.html', '_blank');
+        }
+
+        // 打开问卷
+        function openQuestionnaire() {
+            // 打开金数据问卷
+            window.open('https://lnaip4lp.jsjform.com/f/PKYztO', '_blank');
+            
+            // 延迟显示确认弹窗，给用户时间打开问卷
+            setTimeout(() => {
+                const modal = document.getElementById('confirmReflectionModal');
+                modal.classList.add('show');
+            }, 1500);
+        }
+
+        // 确认提交反思
+        function confirmReflection() {
+            const data = initLearningData();
+            
+            // 标记反思完成
+            data.reflection = true;
+            
+            // 记录完成的任务
+            if (!data.completedTasks.includes('reflection')) {
+                data.completedTasks.push('reflection');
+            }
+            
+            saveLearningData(data);
+            closeModal('confirmReflectionModal');
+            
+            // 显示成功弹窗，获得精神传承者徽章
+            showBadgeModal();
+            updateUI();
+        }
+
+        // 生成报告
+        function generateReport() {
+            const modal = document.getElementById('reportModal');
+            modal.classList.add('show');
+        }
+
+        // 重置学习
+        function resetLearning() {
+            const modal = document.getElementById('resetModal');
+            modal.classList.add('show');
+        }
+
+        // 确认重置
+        function confirmReset() {
+            localStorage.removeItem(STORAGE_KEY);
+            closeModal('resetModal');
+            
+            // 刷新页面
+            setTimeout(() => {
+                location.reload();
+            }, 500);
+        }
+
+        // 创建粒子背景
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (4 + Math.random() * 4) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        // 滚动渐入动画
+        function setupScrollAnimation() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.animate-on-scroll').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            setupScrollAnimation();
+            handleURLParams();
+        });
+
+        // 点击弹窗外部关闭
+        document.querySelectorAll('.modal-overlay').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal(modal.id);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
