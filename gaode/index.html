@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>新四军抗战历史地图</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        #container {
+            width: 100%;
+            height: 100%;
+        }
+
+        .event-panel {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            width: 200px;
+            max-height: calc(100vh - 30px);
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            border: 1px solid rgba(0, 122, 255, 0.2);
+        }
+
+        .panel-header {
+            background: linear-gradient(135deg, #007aff, #0055cc);
+            padding: 12px 15px;
+            font-size: 15px;
+            font-weight: bold;
+            color: #ffffff;
+            text-align: center;
+        }
+
+        .event-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .event-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .event-item:last-child {
+            border-bottom: none;
+        }
+
+        .event-item:hover {
+            background: rgba(0, 122, 255, 0.08);
+        }
+
+        .event-item.active {
+            background: rgba(0, 122, 255, 0.18);
+            border-left: 4px solid #007aff;
+            box-shadow: 0 4px 20px rgba(0, 122, 255, 0.35),
+                        0 2px 8px rgba(0, 122, 255, 0.25),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            transform: translateX(4px);
+        }
+
+        .event-year {
+            font-size: 13px;
+            color: #007aff;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .event-title {
+            font-size: 14px;
+            color: #1a1a1a;
+            font-weight: 500;
+        }
+
+        .event-location {
+            font-size: 11px;
+            color: #666666;
+            margin-top: 4px;
+        }
+
+        .custom-info-window {
+            width: 280px;
+            background: linear-gradient(135deg, #ffffff, #f8f8f8);
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(0, 122, 255, 0.3);
+        }
+
+        .info-header {
+            background: linear-gradient(135deg, #007aff, #0055cc);
+            padding: 16px;
+            text-align: center;
+        }
+
+        .info-title {
+            font-size: 19px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
+
+        .info-year {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .info-body {
+            padding: 16px;
+        }
+
+        .info-section {
+            margin-bottom: 14px;
+        }
+
+        .info-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-label {
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            color: #666666;
+            margin-bottom: 6px;
+        }
+
+        .info-label span {
+            margin-left: 6px;
+        }
+
+        .info-content-text {
+            font-size: 14px;
+            color: #333333;
+            line-height: 1.7;
+            padding-left: 22px;
+        }
+
+        .info-persons {
+            font-size: 14px;
+            color: #007aff;
+            font-weight: 500;
+            padding-left: 22px;
+        }
+
+        .info-location {
+            font-size: 13px;
+            color: #555555;
+            padding-left: 22px;
+        }
+
+        .ai-assistant {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1001;
+        }
+
+        .ai-btn {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #007aff, #5856d6);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 6px 24px rgba(0, 122, 255, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .ai-btn:hover {
+            transform: scale(1.08);
+            box-shadow: 0 8px 32px rgba(0, 122, 255, 0.5);
+        }
+
+        .ai-btn svg {
+            width: 28px;
+            height: 28px;
+            fill: #ffffff;
+        }
+
+        .ai-tip {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            background: rgba(0, 0, 0, 0.8);
+            color: #ffffff;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 1002;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+
+        .ai-tip.hide {
+            opacity: 0;
+        }
+
+        .ai-panel {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            width: 300px;
+            height: 400px;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transform: scale(0.8);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .ai-panel.show {
+            transform: scale(1);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .ai-panel-header {
+            background: linear-gradient(135deg, #007aff, #5856d6);
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .ai-panel-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ai-panel-title svg {
+            width: 20px;
+            height: 20px;
+            fill: #ffffff;
+        }
+
+        .ai-close-btn {
+            width: 28px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            color: #ffffff;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+
+        .ai-close-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .ai-messages {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            background: #f5f5f7;
+        }
+
+        .ai-message {
+            margin-bottom: 12px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .ai-message.user {
+            text-align: right;
+        }
+
+        .ai-message-content {
+            display: inline-block;
+            max-width: 85%;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .ai-message.bot .ai-message-content {
+            background: #ffffff;
+            color: #333333;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .ai-message.user .ai-message-content {
+            background: linear-gradient(135deg, #007aff, #0055cc);
+            color: #ffffff;
+            border-bottom-right-radius: 4px;
+        }
+
+        .ai-input-area {
+            padding: 12px;
+            background: #ffffff;
+            border-top: 1px solid #e5e5e5;
+            display: flex;
+            gap: 8px;
+        }
+
+        .ai-input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid #e5e5e5;
+            border-radius: 20px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .ai-input:focus {
+            border-color: #007aff;
+        }
+
+        .ai-send-btn {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #007aff, #0055cc);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+        }
+
+        .ai-send-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .ai-send-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: #ffffff;
+        }
+
+        .ai-typing {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 10px 14px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            width: fit-content;
+        }
+
+        .ai-typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #007aff;
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+
+        .ai-typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .ai-typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+        @media (max-width: 480px) {
+            .event-panel {
+                width: 170px;
+                top: 10px;
+                left: 10px;
+                max-height: calc(100vh - 20px);
+            }
+
+            .panel-header {
+                padding: 10px 12px;
+                font-size: 14px;
+            }
+
+            .event-item {
+                padding: 10px 12px;
+            }
+
+            .event-year {
+                font-size: 12px;
+            }
+
+            .event-title {
+                font-size: 13px;
+            }
+
+            .custom-info-window {
+                width: 260px;
+            }
+
+            .ai-panel {
+                width: calc(100vw - 40px);
+                height: 60vh;
+                right: -10px;
+            }
+
+            .ai-assistant {
+                bottom: 15px;
+                right: 15px;
+            }
+
+            .ai-tip {
+                width: calc(100vw - 100px);
+                right: -10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="container"></div>
+
+    <div class="event-panel">
+        <div class="panel-header">📜 历史事件</div>
+        <div class="event-list" id="eventList"></div>
+    </div>
+
+    <div class="ai-assistant">
+        <div class="ai-tip" id="aiTip">💡 点击地图向导，了解更多历史知识</div>
+        <div class="ai-panel" id="aiPanel">
+            <div class="ai-panel-header">
+                <div class="ai-panel-title">
+                    <svg viewBox="0 0 24 24"><path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z"/></svg>
+                    📍 地图历史向导
+                </div>
+                <button class="ai-close-btn" onclick="toggleAiPanel()">×</button>
+            </div>
+            <div class="ai-messages" id="aiMessages">
+                <div class="ai-message bot">
+                    <div class="ai-message-content">您好！我是您的地图历史向导📍，可以为您讲解新四军抗战历史、介绍战役详情、人物故事等。请问您想了解什么？</div>
+                </div>
+            </div>
+            <div class="ai-input-area">
+                <input type="text" class="ai-input" id="aiInput" placeholder="请输入问题..." onkeypress="handleKeyPress(event)">
+                <button class="ai-send-btn" onclick="sendMessage()">
+                    <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                </button>
+            </div>
+        </div>
+        <button class="ai-btn" onclick="toggleAiPanel()">
+            <svg viewBox="0 0 24 24"><path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z"/></svg>
+        </button>
+    </div>
+
+    <script type="text/javascript">
+        window._AMapSecurityConfig = {
+            securityJsCode: 'cd718fae85f10c5d35d81dc900996520'
+        }
+    </script>
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=9d4059252b7d8fcb3612d38748289721"></script>
+
+    <script>
+        const events = [
+            {
+                id: 1,
+                year: '1937-1938',
+                title: '军部组建',
+                location: '南昌',
+                position: [115.892785, 28.682892],
+                description: '1937年10月，根据国共两党协议，南方8省14个地区的红军和游击队改编为国民革命军陆军新编第四军（简称新四军）。叶挺被任命为军长，项英为副军长。1938年1月，新四军军部在江西南昌正式成立，随后各支队相继组建完毕，开赴华中敌后开展抗日斗争。',
+                persons: '叶挺、项英'
+            },
+            {
+                id: 2,
+                year: '1938-1940',
+                title: '东进抗日',
+                location: '苏南、皖南地区',
+                position: [119.5, 31.5],
+                description: '1938年至1940年，新四军贯彻"向东作战，向北发展"的战略方针，分多路深入华中敌后。在苏南、皖南、皖中等地开展游击战争，建立抗日民主根据地。其中第一、二支队在陈毅、张鼎丞领导下，创建了以茅山为中心的苏南抗日根据地，有力打击了日伪军的嚣张气焰。',
+                persons: '陈毅、张鼎丞、叶挺'
+            },
+            {
+                id: 3,
+                year: '1940',
+                title: '黄桥战役',
+                location: '江苏泰兴黄桥',
+                position: [120.151, 32.172],
+                description: '1940年10月，国民党顽固派韩德勤调集3万余人进攻黄桥地区，企图消灭新四军。陈毅、粟裕指挥7000余人奋起反击，采取诱敌深入战术，在黄桥附近全歼顽军第89军及独6旅共1.1万余人。此役的胜利打通了苏北与皖东的联系，奠定了华中抗日根据地的坚实基础。',
+                persons: '陈毅、粟裕'
+            },
+            {
+                id: 4,
+                year: '1941',
+                title: '皖南事变',
+                location: '安徽泾县云岭',
+                position: [118.415, 30.624],
+                description: '1941年1月，国民党顽固派调集8万余兵力，在安徽泾县茂林地区突然包围奉命北移的新四军军部及直属部队9000余人。新四军浴血奋战七昼夜，除约2000人突围外，大部壮烈牺牲。军长叶挺被扣押，副军长项英遇难。这就是震惊中外的"皖南事变"，是国民党第二次反共高潮的顶点。',
+                persons: '叶挺、项英'
+            },
+            {
+                id: 5,
+                year: '1941',
+                title: '军部重建',
+                location: '江苏盐城',
+                position: [120.163, 33.347],
+                description: '皖南事变后，中共中央军委于1941年1月20日发布命令，重建新四军军部。1月25日，新军部在江苏盐城正式成立，陈毅任代理军长，刘少奇任政治委员，全军整编为7个师和1个独立旅，共9万余人。新四军在逆境中重整旗鼓，继续坚持华中敌后抗战。',
+                persons: '陈毅、刘少奇'
+            },
+            {
+                id: 6,
+                year: '1941-1943',
+                title: '反扫荡斗争',
+                location: '江苏盐城、苏中苏北地区',
+                position: [120.5, 33.2],
+                description: '1941年至1943年，日伪军对华中抗日根据地发动了大规模"扫荡"和"清乡"运动。新四军在刘少奇、陈毅领导下，采取"主力兵团地方化"、开展群众性游击战争的方针，军民密切配合，运用地道战、地雷战、麻雀战等多种战术，反击日伪军的"扫荡"、"清乡"，保卫并巩固了华中抗日根据地。',
+                persons: '刘少奇、陈毅'
+            },
+            {
+                id: 7,
+                year: '1945',
+                title: '抗战胜利',
+                location: '延安',
+                position: [109.490, 36.596],
+                description: '1945年8月15日，日本天皇宣布无条件投降，9月2日正式签署投降书。中国人民经过十四年艰苦卓绝的浴血奋战，终于取得了抗日战争的伟大胜利。新四军在八年抗战中，转战大江南北，共作战2.46万余次，歼灭日伪军47万余人，建立了地跨苏、浙、皖、豫、鄂5省的华中抗日根据地，为中华民族的解放事业作出了不可磨灭的历史贡献。',
+                persons: '毛泽东、朱德'
+            }
+        ];
+
+        let map;
+        let markers = [];
+        let activeIndex = -1;
+        let infoWindow;
+        let tipTimeout;
+
+        function showTip() {
+            const tip = document.getElementById('aiTip');
+            tip.style.display = 'block';
+            tip.classList.remove('hide');
+        }
+
+        function createInfoWindowContent(event) {
+            return `
+                <div class="custom-info-window">
+                    <div class="info-header">
+                        <div class="info-title">${event.title}</div>
+                        <div class="info-year">${event.year}</div>
+                    </div>
+                    <div class="info-body">
+                        <div class="info-section">
+                            <div class="info-label">📅 事件内容</div>
+                            <div class="info-content-text">${event.description}</div>
+                        </div>
+                        <div class="info-section">
+                            <div class="info-label">👤 主要人物</div>
+                            <div class="info-persons">${event.persons}</div>
+                        </div>
+                        <div class="info-section">
+                            <div class="info-label">📍 地点</div>
+                            <div class="info-location">${event.location}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function initMap() {
+            map = new AMap.Map('container', {
+                zoom: 6,
+                zooms: [5, 12],
+                center: [117, 32],
+                viewMode: '2D'
+            });
+
+            infoWindow = new AMap.InfoWindow({
+                isCustom: true,
+                closeWhenClickMap: true,
+                offset: new AMap.Pixel(0, -40)
+            });
+
+            const path = events.map(e => e.position);
+
+            const pathLine = new AMap.Polyline({
+                map: map,
+                path: path,
+                showDir: true,
+                strokeColor: '#007aff',
+                strokeWeight: 4,
+                strokeOpacity: 0.8,
+                strokeStyle: 'solid',
+                lineJoin: 'round'
+            });
+
+            for (let i = 0; i < path.length - 1; i++) {
+                const start = path[i];
+                const end = path[i + 1];
+                const midPoint = [
+                    (start[0] + end[0]) / 2,
+                    (start[1] + end[1]) / 2
+                ];
+                const angle = Math.atan2(end[1] - start[1], end[0] - start[0]) * 180 / Math.PI;
+
+                const arrowMarker = new AMap.Marker({
+                    position: midPoint,
+                    icon: new AMap.Icon({
+                        size: new AMap.Size(16, 16),
+                        image: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0iIzAwN2FmZiI+PHBhdGggZD0iTTggMEw4IDE2TDQgMTBsNC00eiIgZmlsbC1vcGFjaXR5PSIwLjgiLz48L3N2Zz4=',
+                        imageSize: new AMap.Size(16, 16)
+                    }),
+                    rotation: angle + 90,
+                    zIndex: 50
+                });
+                map.add(arrowMarker);
+            }
+
+            events.forEach((event, index) => {
+                const marker = new AMap.Marker({
+                    position: event.position,
+                    title: event.title,
+                    anchor: 'bottom-center',
+                    extData: { index: index },
+                    zIndex: index + 1,
+                    icon: 'https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png'
+                });
+
+                marker.on('click', () => {
+                    clickMarker(index);
+                });
+
+                marker.on('dblclick', () => {
+                    dblClickMarker(index);
+                });
+
+                markers.push(marker);
+                map.add(marker);
+            });
+
+            map.on('dblclick', () => {
+                map.setZoom(10);
+            });
+
+            renderEventList();
+            setTimeout(showTip, 1000);
+        }
+
+        function clickMarker(index) {
+            activeIndex = index;
+            const event = events[index];
+
+            map.setZoomAndCenter(10, event.position, true, 1200);
+
+            markers.forEach((marker, i) => {
+                if (i === index) {
+                    marker.setIcon('https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png');
+                } else {
+                    marker.setIcon('https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png');
+                }
+            });
+
+            updateEventList();
+            setTimeout(() => {
+                openInfoWindow(event);
+            }, 1000);
+        }
+
+        function dblClickMarker(index) {
+            activeIndex = index;
+            const event = events[index];
+
+            map.setZoomAndCenter(12, event.position, true, 1500);
+
+            markers.forEach((marker, i) => {
+                if (i === index) {
+                    marker.setIcon('https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png');
+                } else {
+                    marker.setIcon('https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png');
+                }
+            });
+
+            updateEventList();
+            setTimeout(() => {
+                openInfoWindow(event);
+            }, 1300);
+        }
+
+        function openInfoWindow(event) {
+            infoWindow.setContent(createInfoWindowContent(event));
+            infoWindow.open(map, event.position);
+        }
+
+        function updateEventList() {
+            const listItems = document.querySelectorAll('.event-item');
+            listItems.forEach((item, index) => {
+                if (index === activeIndex) {
+                    item.classList.add('active');
+                    item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        }
+
+        function renderEventList() {
+            const eventList = document.getElementById('eventList');
+            eventList.innerHTML = '';
+
+            events.forEach((event, index) => {
+                const div = document.createElement('div');
+                div.className = `event-item`;
+                div.innerHTML = `
+                    <div class="event-year">${event.year}</div>
+                    <div class="event-title">${event.title}</div>
+                    <div class="event-location">${event.location}</div>
+                `;
+                div.addEventListener('click', () => {
+                    clickMarker(index);
+                });
+                div.addEventListener('dblclick', () => {
+                    dblClickMarker(index);
+                });
+                eventList.appendChild(div);
+            });
+        }
+
+        function toggleAiPanel() {
+            const panel = document.getElementById('aiPanel');
+            panel.classList.toggle('show');
+            showTip();
+        }
+
+        function handleKeyPress(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('aiInput');
+            const message = input.value.trim();
+            if (!message) return;
+
+            addMessage(message, 'user');
+            input.value = '';
+
+            showTyping();
+
+            setTimeout(async () => {
+                removeTyping();
+                const response = await callAIApi(message);
+                addMessage(response, 'bot');
+            }, 1500);
+        }
+
+        async function callAIApi(question) {
+            const API_KEY = 'sk-nnxskxwceftmosqkqwiqfdpwuhihkvifzhmmshfmmfpwtjjr';
+            const API_URL = 'https://api.siliconflow.cn/v1/chat/completions';
+
+            const systemPrompt = `你是"地图历史向导"，专门为用户提供新四军抗战历史相关的问题解答。
+你了解以下历史事件和人物：
+- 新四军军部组建（1937-1938，南昌，叶挺、项英）
+- 东进抗日（1938-1940，苏南皖南，陈毅、张鼎丞）
+- 黄桥战役（1940，江苏泰兴陈毅、粟裕）
+- 皖南事变（1941，安徽泾县，叶挺、项英）
+- 军部重建（1941，江苏盐城，陈毅、刘少奇）
+- 反扫荡斗争（1941-1943，苏中苏北，刘少奇、陈毅）
+- 抗战胜利（1945，延安，毛泽东）
+
+请用简洁、生动的方式回答用户的问题。如果用户问的问题与新四军历史无关，请引导他们询问相关历史问题。`;
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${API_KEY}`
+                    },
+                    body: JSON.stringify({
+                        model: 'Qwen/Qwen2.5-7B-Instruct',
+                        messages: [
+                            { role: 'system', content: systemPrompt },
+                            { role: 'user', content: question }
+                        ],
+                        temperature: 0.7,
+                        max_tokens: 500
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API请求失败: ${response.status}`);
+                }
+
+                const data = await response.json();
+                return data.choices[0].message.content;
+            } catch (error) {
+                console.error('AI API错误:', error);
+                return '抱歉，AI服务暂时无法响应，请稍后再试。';
+            }
+        }
+
+        function addMessage(text, type) {
+            const container = document.getElementById('aiMessages');
+            const div = document.createElement('div');
+            div.className = `ai-message ${type}`;
+            div.innerHTML = `<div class="ai-message-content">${text}</div>`;
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function showTyping() {
+            const container = document.getElementById('aiMessages');
+            const div = document.createElement('div');
+            div.id = 'typingIndicator';
+            div.className = 'ai-message bot';
+            div.innerHTML = '<div class="ai-typing"><div class="ai-typing-dot"></div><div class="ai-typing-dot"></div><div class="ai-typing-dot"></div></div>';
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function removeTyping() {
+            const typing = document.getElementById('typingIndicator');
+            if (typing) typing.remove();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initMap();
+        });
+    </script>
+</body>
+</html>
